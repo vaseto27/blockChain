@@ -1,5 +1,6 @@
 const Blockchain = require("./blockchain");
 const Block = require("./block");
+const cryptoHash = require('./crypto-hash')
 
 describe("BlockChain", () => {
   let blockchain, newChain, originalChain;
@@ -49,6 +50,30 @@ describe("BlockChain", () => {
           blockchain.chain[2].data = "some-bad-data";
 
           expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+        });
+      });
+
+      describe("and the chain contains a block with a jumped difficulty", () => {
+        it("return false", () => {
+          const lastBlock = blockchain.chain[blockchain.chain.length - 1];
+
+          const lastHash = lastBlock.hash;
+
+          const timestamp = Date.now();
+
+          const nonce = 0;
+          const data = [];
+          const difficulty = lastBlock.difficulty - 3;
+
+          const hash = cryptoHash(timestamp, lastHash, difficulty, nonce, data);
+
+          const badBlock = new Block({timestamp, lastHash, hash, nonce, difficulty, data})
+
+
+          blockchain.chain.push(badBlock);
+
+
+          expect(Blockchain.isValidChain(blockchain.chain)).toBe(false)
         });
       });
 
@@ -106,14 +131,14 @@ describe("BlockChain", () => {
 
       describe("when the chain is valid", () => {
         beforeEach(() => {
-            blockchain.replaceChain(newChain.chain);
-        })
+          blockchain.replaceChain(newChain.chain);
+        });
         it("replaces the chain", () => {
           expect(blockchain.chain).toEqual(newChain.chain);
         });
-        it('logs about the chain replacement', () => {
-            expect(logMock).toHaveBeenCalled();
-        })
+        it("logs about the chain replacement", () => {
+          expect(logMock).toHaveBeenCalled();
+        });
       });
     });
   });

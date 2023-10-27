@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "hex-to-binary": "^1.0.1"
   }
 }

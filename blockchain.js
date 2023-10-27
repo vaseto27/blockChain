@@ -1,5 +1,5 @@
 const Block = require("./block");
-const cryptoHash = require('./crypto-hash')
+const cryptoHash = require("./crypto-hash");
 
 class Blockchain {
   constructor() {
@@ -21,17 +21,23 @@ class Blockchain {
     }
 
     for (let i = 1; i < chain.length; i++) {
-        const { timestamp, lastHash, hash , data } = chain[i];
+      const { timestamp, lastHash, hash, nonce, difficulty, data } = chain[i];
 
       const actualLastHash = chain[i - 1].hash;
 
-      if(lastHash !== actualLastHash) {
+      const lastDifficulty = chain[i-1].difficulty;
+
+      if (lastHash !== actualLastHash) {
         return false;
       }
 
-      const validatedHash = cryptoHash(timestamp, lastHash, data);
+      if(Math.abs(lastDifficulty - difficulty) > 1) {
+        return false;
+      }
 
-      if(hash !== validatedHash) {
+      const validatedHash = cryptoHash(timestamp, lastHash, nonce, difficulty, data);
+
+      if (hash !== validatedHash) {
         return false;
       }
     }
@@ -39,20 +45,20 @@ class Blockchain {
     return true;
   }
 
-    replaceChain(chain) {
-        if(chain.length <= this.chain.length) {
-            console.error('The incoming chain must be longer!')
-            return;
-        }
-
-        if(!Blockchain.isValidChain(chain)) {
-            console.error('The incoming chain must be valid!')
-            return
-        }
-
-        console.log('replacing chain with ', chain)
-        this.chain= chain;
+  replaceChain(chain) {
+    if (chain.length <= this.chain.length) {
+      console.error("The incoming chain must be longer!");
+      return;
     }
+
+    if (!Blockchain.isValidChain(chain)) {
+      console.error("The incoming chain must be valid!");
+      return;
+    }
+
+    console.log("replacing chain with ", chain);
+    this.chain = chain;
+  }
 }
 
 module.exports = Blockchain;
