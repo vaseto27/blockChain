@@ -1,3 +1,4 @@
+const { REWARD_INPUT, MINING_REWARD } = require("../config");
 const { verifySignature } = require("../util/eliptic");
 const Transaction = require("./transaction");
 const Wallet = require("./wallet");
@@ -154,4 +155,21 @@ describe("Transaction", () => {
       })
     });
   });
+
+  describe("rewardTransactions()", () => {
+    let rewardTransactions, minerWallet;
+
+    beforeEach(() => {
+      minerWallet = new Wallet();
+      rewardTransactions = Transaction.rewardTransactions({minerWallet});
+    });
+
+    it('creates a transaction with the reward input', () => {
+      expect(rewardTransactions.input).toEqual(REWARD_INPUT);
+    })
+
+    it('creates ones transaction for the miner with the `MINING_REWARD`', () => {
+      expect(rewardTransactions.outputMap[minerWallet.publicKey]).toEqual(MINING_REWARD)
+    })
+  })
 });
