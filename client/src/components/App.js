@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Blocks } from "./Blocks";
+import logo_blockchain from "../../assets/img/logo_blockchain.png";
 
 export function App() {
   const [walletInfo, setWalletInfo] = useState({ address: "", balance: 0 });
@@ -12,12 +13,18 @@ export function App() {
   }, []);
 
   return (
-    <div>
+    <div className="app">
+      <img className="logo" src={logo_blockchain}></img>
+      <br />
       <div>BlockChain...</div>
-      <div>Adress: {walletInfo.address}</div>
-      <div>Balance: {walletInfo.balance}</div>
-      <br/>
-      <Blocks/>
+      <br />
+      <div className="wallet-info">
+        <div>Adress: {walletInfo.address}</div>
+        <div>Balance: {walletInfo.balance}</div>
+      </div>
+
+      <br />
+      <Blocks />
     </div>
   );
 }
