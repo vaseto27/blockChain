@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Blocks } from "./Blocks";
+// import { Blocks } from "./Blocks";
 import logo_blockchain from "../../assets/img/logo_blockchain.png";
 
-export function App() {
+const App = () => {
   const [walletInfo, setWalletInfo] = useState({ address: "", balance: 0 });
   useEffect(() => {
     fetch("http://localhost:3000/api/wallet-info")
@@ -24,7 +24,9 @@ export function App() {
       </div>
 
       <br />
-      <Blocks />
+      {/* <Blocks /> */}
     </div>
   );
 }
+
+export default App;

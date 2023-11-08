@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Block } from "./Block";
+import Block from "./Block";
 
-export const Blocks = () => {
+const Blocks = () => {
   const [blocks, setBlocks] = useState([]);
   useEffect(() => {
     fetch("http://localhost:3000/api/blocks")
@@ -19,3 +19,5 @@ export const Blocks = () => {
     </div>
   );
 };
+
+export default Blocks
