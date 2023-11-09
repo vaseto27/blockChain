@@ -31,3 +31,12 @@ body {
 .transaction {
     padding: 5%;
 }
+
+a, a:hover {
+    color: #e66;
+    text-decoration: underline;
+}
+
+.conduct-transactions, .transaction-pool {
+    margin: 10%;
+}

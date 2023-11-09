@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Block from "./Block";
+import { Link } from 'react-router-dom';
 
 const Blocks = () => {
   const [blocks, setBlocks] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3000/api/blocks")
+    fetch(`${document.location.origin}/api/blocks`)
       .then((res) => res.json())
       .then((data) => {
         setBlocks(data);
@@ -13,6 +14,7 @@ const Blocks = () => {
 
   return (
     <div>
+      <div><Link to='/'>Home</Link></div>
       {blocks.map((block, index) => {
         return <Block key={index} block={block} />;
       })}

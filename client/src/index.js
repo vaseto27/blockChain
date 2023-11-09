@@ -5,6 +5,8 @@ import history from "./history";
 import App from "./components/App";
 import Blocks from "./components/Blocks";
 import "./index.css";
+import ConductTransaction from "./components/ConductTransaction";
+import TransactionPool from "./components/TransactionPool";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,6 +14,8 @@ root.render(
     <Routes>
       <Route exact path="/" element={<App />} />
       <Route path="/blocks" element={<Blocks />} />
+      <Route path="/conduct-transaction" element={<ConductTransaction />} />
+      <Route path="/transaction-pool" element={<TransactionPool />} />
     </Routes>
   </BrowserRouter>
 );

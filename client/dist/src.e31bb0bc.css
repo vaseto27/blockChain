@@ -32,4 +32,13 @@ body {
     padding: 5%;
 }
 
+a, a:hover {
+    color: #e66;
+    text-decoration: underline;
+}
+
+.conduct-transactions, .transaction-pool {
+    margin: 10%;
+}
+
 /*# sourceMappingURL=/src.e31bb0bc.css.map */

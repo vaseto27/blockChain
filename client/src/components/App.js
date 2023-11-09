@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-// import { Blocks } from "./Blocks";
 import logo_blockchain from "../../assets/img/logo_blockchain.png";
+import { Link } from 'react-router-dom';
 
 const App = () => {
   const [walletInfo, setWalletInfo] = useState({ address: "", balance: 0 });
   useEffect(() => {
-    fetch("http://localhost:3000/api/wallet-info")
+    fetch(`${document.location.origin}/api/wallet-info`)
       .then((res) => res.json())
       .then((data) => {
         setWalletInfo({ address: data.address, balance: data.balance });
@@ -17,6 +17,10 @@ const App = () => {
       <img className="logo" src={logo_blockchain}></img>
       <br />
       <div>BlockChain...</div>
+      <br/> 
+      <div><Link to='/blocks'>Blocks</Link></div>
+      <div><Link to='/conduct-transaction'>Conduct Transaction</Link></div>
+      <div><Link to='/transaction-pool'>Transaction Pool</Link></div>
       <br />
       <div className="wallet-info">
         <div>Adress: {walletInfo.address}</div>
@@ -24,7 +28,6 @@ const App = () => {
       </div>
 
       <br />
-      {/* <Blocks /> */}
     </div>
   );
 }
