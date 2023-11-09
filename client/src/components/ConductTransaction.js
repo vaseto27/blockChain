@@ -6,6 +6,7 @@ import history from '../history'
 const ConductTransaction = () => {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState(0);
+  const [knwonAdrresses, setAdrresses] = useState([])
   const updateRecipient = (event) => {
     const recipient = event.target.value;
     setRecipient(recipient);
@@ -28,10 +29,23 @@ const ConductTransaction = () => {
       });
   };
 
+  useEffect(() => {
+    fetch(`${document.location.origin}/api/known-addresses`)
+    .then(response => response.json())
+    .then(data => setAdrresses(data))
+  }, [])
+
   return (
     <div className="conduct-transactions">
       <Link to="/">Home</Link>
       <h3>Conduct a Transaction</h3>
+      <br/>
+      <h4>Known Adrresses</h4>
+      {knwonAdrresses.map(address => {
+        return(
+          <div key={address}>{address}</div>
+        )
+      })}
       <FormGroup>
         <FormControl
           input="text"

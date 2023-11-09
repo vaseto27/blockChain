@@ -55566,9 +55566,14 @@ exports.default = void 0;
 var _react = _interopRequireWildcard(require("react"));
 var _Block = _interopRequireDefault(require("./Block"));
 var _reactRouterDom = require("react-router-dom");
+var _reactBootstrap = require("react-bootstrap");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -55580,16 +55585,46 @@ var Blocks = function Blocks() {
     _useState2 = _slicedToArray(_useState, 2),
     blocks = _useState2[0],
     setBlocks = _useState2[1];
-  (0, _react.useEffect)(function () {
-    fetch("".concat(document.location.origin, "/api/blocks")).then(function (res) {
+  var _useState3 = (0, _react.useState)(1),
+    _useState4 = _slicedToArray(_useState3, 2),
+    paginateId = _useState4[0],
+    setPaginateId = _useState4[1];
+  var _useState5 = (0, _react.useState)(0),
+    _useState6 = _slicedToArray(_useState5, 2),
+    blocksLength = _useState6[0],
+    setBlocksLength = _useState6[1];
+  var fetchPaginatedBlocks = function fetchPaginatedBlocks(paginateId) {
+    fetch("".concat(document.location.origin, "/api/blocks/").concat(paginateId)).then(function (res) {
       return res.json();
     }).then(function (data) {
       setBlocks(data);
     });
+  };
+  var fetchBlocksLength = function fetchBlocksLength() {
+    fetch("".concat(document.location.origin, "/api/blocks/length")).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      return setBlocksLength(data);
+    });
+  };
+  (0, _react.useEffect)(function () {
+    fetchBlocksLength();
+    fetchPaginatedBlocks(paginateId);
   }, []);
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/"
-  }, "Home")), blocks.map(function (block, index) {
+  }, "Home")), /*#__PURE__*/_react.default.createElement("h3", null, "BLOCKS"), _toConsumableArray(Array(Math.ceil(blocksLength / 5)).keys()).map(function (key) {
+    var paginateId = key + 1;
+    return /*#__PURE__*/_react.default.createElement("span", {
+      key: key,
+      onClick: function onClick() {
+        return fetchPaginatedBlocks(paginateId);
+      }
+    }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Button, {
+      variant: "danger",
+      size: "sm"
+    }, paginateId), ' ');
+  }), blocks.map(function (block, index) {
     return /*#__PURE__*/_react.default.createElement(_Block.default, {
       key: index,
       block: block
@@ -55597,7 +55632,7 @@ var Blocks = function Blocks() {
   }));
 };
 var _default = exports.default = Blocks;
-},{"react":"../../node_modules/react/index.js","./Block":"components/Block.js","react-router-dom":"../../node_modules/react-router-dom/dist/index.js"}],"../../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","./Block":"components/Block.js","react-router-dom":"../../node_modules/react-router-dom/dist/index.js","react-bootstrap":"../../node_modules/react-bootstrap/esm/index.js"}],"../../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 function getBundleURLCached() {
   if (!bundleURL) {
@@ -55681,6 +55716,10 @@ var ConductTransaction = function ConductTransaction() {
     _useState4 = _slicedToArray(_useState3, 2),
     amount = _useState4[0],
     setAmount = _useState4[1];
+  var _useState5 = (0, _react.useState)([]),
+    _useState6 = _slicedToArray(_useState5, 2),
+    knwonAdrresses = _useState6[0],
+    setAdrresses = _useState6[1];
   var updateRecipient = function updateRecipient(event) {
     var recipient = event.target.value;
     setRecipient(recipient);
@@ -55706,11 +55745,22 @@ var ConductTransaction = function ConductTransaction() {
       _history.default.push('/transaction-pool');
     });
   };
+  (0, _react.useEffect)(function () {
+    fetch("".concat(document.location.origin, "/api/known-addresses")).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      return setAdrresses(data);
+    });
+  }, []);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "conduct-transactions"
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/"
-  }, "Home"), /*#__PURE__*/_react.default.createElement("h3", null, "Conduct a Transaction"), /*#__PURE__*/_react.default.createElement(_reactBootstrap.FormGroup, null, /*#__PURE__*/_react.default.createElement(_reactBootstrap.FormControl, {
+  }, "Home"), /*#__PURE__*/_react.default.createElement("h3", null, "Conduct a Transaction"), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("h4", null, "Known Adrresses"), knwonAdrresses.map(function (address) {
+    return /*#__PURE__*/_react.default.createElement("div", {
+      key: address
+    }, address);
+  }), /*#__PURE__*/_react.default.createElement(_reactBootstrap.FormGroup, null, /*#__PURE__*/_react.default.createElement(_reactBootstrap.FormControl, {
     input: "text",
     placeholder: "recipient",
     value: recipient,

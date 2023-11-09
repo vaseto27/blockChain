@@ -70,6 +70,38 @@ app.get("/api/transaction-pool-map", (req, res) => {
   res.json(transactionPool.transactionMap);
 });
 
+app.get('/api/blocks/length', (req, res) => {
+  res.json(blockchain.chain.length)
+})
+
+app.get('/api/blocks/:id', (req, res) => {
+  const {id} = req.params;
+  const {length} = blockchain.chain;
+
+  const reverseBlocks = blockchain.chain.slice().reverse();
+
+  let startIndex = (id - 1) * 5;
+  let endIndex = id * 5;
+
+  startIndex = startIndex < length ? startIndex : length;
+  endIndex = endIndex < length ? endIndex: length;
+
+  res.json(reverseBlocks.slice(startIndex, endIndex))
+})
+
+app.get("/api/known-addresses", (req, res) => {
+  const addressMap = {};
+  for (let block of blockchain.chain) {
+    for(let transaction of block.data) {
+      const recipient = Object.keys(transaction.outputMap);
+
+      recipient.forEach((recipient) => addressMap[recipient] = recipient);
+    }
+  }
+
+  res.json(Object.keys(addressMap))
+})
+
 app.get("/api/mine-transactions", (req, res) => {
   transactionMiner.mineTransaction();
 
